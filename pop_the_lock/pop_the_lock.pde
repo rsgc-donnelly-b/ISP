@@ -1,5 +1,7 @@
 //values that will be used later in the code
-float radius = 70;
+float angle = 1;
+float change = 0;
+float radius = 63;
 void setup() {
   size(400, 600);
   smooth();
@@ -24,14 +26,24 @@ void draw() {
   fill(#64E5B0);
   ellipse(200, 245, 100, 100);
 
+  //setting the origin in the middle
   translate(200, 245);
-  
-  fill(0);
-  ellipse(0, 0, 5, 5);
 
   //marker revolving around the lock
-  fill(#FF6A6A);
-  float x = cos(radians(frameCount)) * radius;
-  float y = sin(radians(frameCount)) * radius;
-  ellipse(x, y, 10, 10);
+
+  //If statement in order to get it to move in the opposite direction
+  if (keyPressed) {
+    if (key == 'f' || key == 'f') {
+      fill(#FF6A6A);
+      fill(#FF6A6A);
+      float x = cos(radians(change+=angle)) * radius;
+      float y = sin(radians(change+=angle)) * radius;
+      ellipse(x, y, 24, 24);
+    }
+  } else {
+    fill(#FF6A6A);
+    float x = cos(radians(change-=angle)) * radius;
+    float y = sin(radians(change-=angle)) * radius;
+    ellipse(x, y, 24, 24);
+  }
 }
