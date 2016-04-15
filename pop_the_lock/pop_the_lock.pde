@@ -1,6 +1,6 @@
 //values that will be used later in the code
-float angle = 1;
-float change = 0;
+float change = 1;
+float angle = 0;
 float radius = 63;
 void setup() {
   size(400, 600);
@@ -31,19 +31,18 @@ void draw() {
 
   //marker revolving around the lock
 
+  //Move the circle
+  float x = cos(radians(angle+=change)) * radius;
+  float y = sin(radians(angle+=change)) * radius;
+  fill(#FF6A6A);
+  ellipse(x, y, 24, 24);
+
   //If statement in order to get it to move in the opposite direction
   if (keyPressed) {
-    if (key == 'f' || key == 'f') {
-      fill(#FF6A6A);
-      fill(#FF6A6A);
-      float x = cos(radians(change+=angle)) * radius;
-      float y = sin(radians(change+=angle)) * radius;
-      ellipse(x, y, 24, 24);
+    if (key == 'f') {
+      change = -1;
+    } else {
+      change = 1;
     }
-  } else {
-    fill(#FF6A6A);
-    float x = cos(radians(change-=angle)) * radius;
-    float y = sin(radians(change-=angle)) * radius;
-    ellipse(x, y, 24, 24);
   }
 }
