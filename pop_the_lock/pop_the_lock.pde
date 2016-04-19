@@ -2,6 +2,7 @@
 float change = 1;
 float angle = 0;
 float radius = 63;
+int timeSinceDirectionSwap = 0;
 void setup() {
   size(400, 600);
   smooth();
@@ -36,13 +37,14 @@ void draw() {
   float y = sin(radians(angle+=change)) * radius;
   fill(#FF6A6A);
   ellipse(x, y, 24, 24);
+  
+  timeSinceDirectionSwap ++;
 
   //If statement in order to get it to move in the opposite direction
   if (keyPressed) {
-    if (key == 'f') {
-      change = -1;
-    } else {
-      change = 1;
+    if (key == 'f' && timeSinceDirectionSwap >= 19) {
+      change *= -1;
+      timeSinceDirectionSwap = 0;
     }
   }
 }
