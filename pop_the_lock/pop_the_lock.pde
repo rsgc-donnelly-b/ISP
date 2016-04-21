@@ -1,11 +1,32 @@
+//Minim Library for music
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.effects.*;
+import ddf.minim.signals.*;
+import ddf.minim.spi.*;
+import ddf.minim.ugens.*;
+
 //values that will be used later in the code
 float change = 1;
 float angle = 0;
 float radius = 63;
 int timeSinceDirectionSwap = 0;
+
+//Minim Setup
+Minim minim;//audio context
+AudioPlayer player;
+AudioInput input;
+AudioPlayer song;
+
 void setup() {
   size(400, 600);
   smooth();
+
+  //Playing the Spy Hunter song
+  minim = new Minim(this);
+  input = minim.getLineIn();
+  song = minim.loadFile("Spy Hunter.mp3");
+  song.play();
 }
 
 void draw() {
@@ -37,7 +58,7 @@ void draw() {
   float y = sin(radians(angle+=change)) * radius;
   fill(#FF6A6A);
   ellipse(x, y, 24, 24);
-  
+
   timeSinceDirectionSwap ++;
 
   //If statement in order to get it to move in the opposite direction
