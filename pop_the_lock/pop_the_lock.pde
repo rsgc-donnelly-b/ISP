@@ -6,11 +6,14 @@ import ddf.minim.signals.*;
 import ddf.minim.spi.*;
 import ddf.minim.ugens.*;
 
+PImage startmenu;
+
 //values that will be used later in the code
 float change = 1;
 float angle = 0;
 float radius = 63;
 int timeSinceDirectionSwap = 0;
+int lvl;
 
 //Minim Setup
 Minim minim;//audio context
@@ -22,44 +25,74 @@ void setup() {
   size(400, 600);
   smooth();
 
+  //Start menu level
+  lvl = 1;
+
   //Playing the Spy Hunter song
   minim = new Minim(this);
   input = minim.getLineIn();
   song = minim.loadFile("Spy Hunter.mp3");
   song.play();
+
+  //Loading the startmenu image
+  startmenu = loadImage("Startmenu.png");
 }
 
 void draw() {
+  //startmenu
+  if (lvl == 1) { 
+    textSize(50);
+    text("Pop The Lock!", 10, 30);
+  }
+  //game itself
+  if (lvl == 2) {
+    //background
+    noStroke();
+    fill(#64E5B0);
 
-  //background
-  noStroke();
-  fill(#64E5B0);
+    //top part of the lock
+    rect(0, 0, 400, 600);
+    fill(70);
+    arc(200, 203, 126, 200, radians(180), radians(360));
+    fill(#63efb5);
+    arc(200, 220, 102, 196, radians(180), radians(360));
 
-  //top part of the lock
-  rect(0, 0, 400, 600);
-  fill(70);
-  arc(200, 203, 126, 200, radians(180), radians(360));
-  fill(#63efb5);
-  arc(200, 220, 102, 196, radians(180), radians(360));
+    //middle part of the lock
+    fill(0);
+    ellipse(200, 245, 150, 150);
+    fill(#64E5B0);
+    ellipse(200, 245, 100, 100);
 
-  //middle part of the lock
-  fill(0);
-  ellipse(200, 245, 150, 150);
-  fill(#64E5B0);
-  ellipse(200, 245, 100, 100);
+    //background
+    noStroke();
+    fill(#64E5B0);
 
-  //setting the origin in the middle
-  translate(200, 245);
+    //top part of the lock
+    rect(0, 0, 400, 600);
+    fill(70);
+    arc(200, 203, 126, 200, radians(180), radians(360));
+    fill(#63efb5);
+    arc(200, 220, 102, 196, radians(180), radians(360));
 
-  //marker revolving around the lock
+    //middle part of the lock
+    fill(0);
+    ellipse(200, 245, 150, 150);
+    fill(#64E5B0);
+    ellipse(200, 245, 100, 100);
 
-  //Move the circle
-  float x = cos(radians(angle+=change)) * radius;
-  float y = sin(radians(angle+=change)) * radius;
-  fill(#FF6A6A);
-  ellipse(x, y, 24, 24);
+    //setting the origin in the middle
+    translate(200, 245);
 
-  timeSinceDirectionSwap ++;
+    //marker revolving around the lock
+
+    //Move the circle
+    float x = cos(radians(angle+=change)) * radius;
+    float y = sin(radians(angle+=change)) * radius;
+    fill(#FF6A6A);
+    ellipse(x, y, 24, 24);
+
+    timeSinceDirectionSwap ++;
+  }
 
   //If statement in order to get it to move in the opposite direction
   if (keyPressed) {
