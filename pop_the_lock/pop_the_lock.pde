@@ -1,16 +1,9 @@
-//Minim Library for music
-import ddf.minim.*;
-import ddf.minim.analysis.*;
-import ddf.minim.effects.*;
-import ddf.minim.signals.*;
-import ddf.minim.spi.*;
-import ddf.minim.ugens.*;
-
 //values that will be used later in the code
 float change = 1;
 float angle = 0;
 float radius = 63;
 int timeSinceDirectionSwap = 0;
+<<<<<<< HEAD
 int lvl = 1;
 String word = "Jesus is my lord and saviour";
 
@@ -35,6 +28,11 @@ void setup() {
   input = minim.getLineIn();
   song = minim.loadFile("Spy Hunter.mp3");
   song.play();
+=======
+void setup() {
+  size(400, 600);
+  smooth();
+>>>>>>> parent of 75f130b... I added music
 }
 
 void draw() {
@@ -106,6 +104,7 @@ void draw() {
     noStroke();
     fill(#64E5B0);
 
+<<<<<<< HEAD
     //top part of the lock
     rect(0, 0, 400, 600);
     fill(70);
@@ -132,6 +131,15 @@ void draw() {
 
     timeSinceDirectionSwap ++;
   }
+=======
+  //Move the circle
+  float x = cos(radians(angle+=change)) * radius;
+  float y = sin(radians(angle+=change)) * radius;
+  fill(#FF6A6A);
+  ellipse(x, y, 24, 24);
+  
+  timeSinceDirectionSwap ++;
+>>>>>>> parent of 75f130b... I added music
 
   //If statement in order to get it to move in the opposite direction
   if (keyPressed) {
