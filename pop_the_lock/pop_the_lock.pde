@@ -6,14 +6,24 @@ import ddf.minim.signals.*;
 import ddf.minim.spi.*;
 import ddf.minim.ugens.*;
 
-PImage startmenu;
+PVector polarToCartesian(float radius, float angle) {
+  float x = radius * cos(angle);
+  float y = radius * sin(angle);
+
+  return new PVector(x, y);
+}
 
 //values that will be used later in the code
-float change = 2;
+float change = 6;
 float angle = 0;
 float radius = 63;
 int timeSinceDirectionSwap = 0;
 int lvl;
+
+PVector pos;
+
+//boolean for random points on the circle
+boolean firstNumber = true;
 
 //Minim Setup
 Minim minim;//audio context
@@ -22,10 +32,13 @@ AudioInput input;
 AudioPlayer song;
 
 void setup() {
+  pos = polarToCartesian(radius, random(360));
+
+  //
   size(400, 600);
   smooth();
 
-  //Start menu level
+  //Start menu level-
   lvl = 1;
 
   //Playing the Spy Hunter song
@@ -41,8 +54,6 @@ void draw() {
     //background
     noStroke();
     fill(#64E5B0);
-    textSize(50);
-    text("Pop The Lock!", 10, 30);
 
     //top part of the lock
     rect(0, 0, 400, 600);
@@ -73,6 +84,23 @@ void draw() {
     ellipse(200, 245, 150, 150);
     fill(#64E5B0);
     ellipse(200, 245, 100, 100);
+
+    //Title
+    fill(0);
+    textAlign(CENTER);
+    textSize(50);
+    text("Pop The Lock!", 200, 45);
+
+    //Subtitle
+    fill(0);
+    textAlign(CENTER);
+    textSize(20);
+    text("Press S to Start!", 200, 80);
+
+    fill(0);
+    textAlign(CENTER);
+    textSize(20);
+    text("Press esc to Quit!", 200, 500);
   }
   //game itself
   else if (lvl == 2) {
@@ -113,26 +141,39 @@ void draw() {
     //setting the origin in the middle
     translate(200, 245);
 
-    //marker revolving around the lock
+    //Move the circle using a timer
 
-    //Move the circle
     angle+=change;
     fill(0);
     float x = cos(radians(angle)) * radius;
     float y = sin(radians(angle)) * radius;
     fill(#FF6A6A);
     ellipse(x, y, 24, 24);
-
     timeSinceDirectionSwap ++;
   }
-}
 
+  if (firstNumber == false) {
+  }
 
+  if ((lvl == 2)&&(firstNumber == true)) {
+    
+    fill(#E9FF48);
+    ellipse(pos.x, pos.y, 24, 24);
+  }
+  
+}    
+
+//keypressed functions
 void keyPressed() {
   if (key == 'f' && timeSinceDirectionSwap >= 19) {
     change *= -1;
     timeSinceDirectionSwap = 0;
   } else if (key == 's') {
-    lvl+=1;
+    lvl = 2;
+  } else if (key == 'S') {
+  } else if (key == 'r') {
+    lvl = 1;
+  } else if (key == 'R') {
+  } else if (key == 'd') {
   }
 }
