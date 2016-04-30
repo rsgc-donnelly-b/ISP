@@ -6,7 +6,7 @@ import ddf.minim.signals.*;
 import ddf.minim.spi.*;
 import ddf.minim.ugens.*;
 
-PVector polarToCartesian(float radius, float angle) {
+PVector randomPoint(float radius, float angle) {
   float x = radius * cos(angle);
   float y = radius * sin(angle);
 
@@ -14,11 +14,18 @@ PVector polarToCartesian(float radius, float angle) {
 }
 
 //values that will be used later in the code
-float change = 6;
+float change = 3;
 float angle = 0;
 float radius = 63;
 int timeSinceDirectionSwap = 0;
 int lvl;
+float circleX = cos(radians(angle)) * radius;
+float circleY = sin(radians(angle)) * radius;
+int markerX = width; 
+int markerY = height;
+int death = 1;
+int score = 0;
+int highscore;
 
 PVector pos;
 
@@ -32,7 +39,7 @@ AudioInput input;
 AudioPlayer song;
 
 void setup() {
-  pos = polarToCartesian(radius, random(360));
+  pos = randomPoint(radius, random(360));
 
   //
   size(400, 600);
@@ -49,6 +56,7 @@ void setup() {
 }
 
 void draw() {
+  ellipseMode(CENTER);
   //startmenu
   if (lvl == 1) { 
     //background
@@ -145,10 +153,10 @@ void draw() {
 
     angle+=change;
     fill(0);
-    float x = cos(radians(angle)) * radius;
-    float y = sin(radians(angle)) * radius;
+    float circleX = cos(radians(angle)) * radius;
+    float circleY = sin(radians(angle)) * radius;
     fill(#FF6A6A);
-    ellipse(x, y, 24, 24);
+    ellipse(circleX, circleY, 24, 24);
     timeSinceDirectionSwap ++;
   }
 
@@ -156,11 +164,22 @@ void draw() {
   }
 
   if ((lvl == 2)&&(firstNumber == true)) {
-    
+
     fill(#E9FF48);
     ellipse(pos.x, pos.y, 24, 24);
   }
-  
+  if ((sqrt(sq((pos.x - 30 - 15) - circleX) + sq((pos.y - 40 - 15) - circleY))) < 35)
+
+  {
+    //stops it from continuing to draw
+    noLoop();
+  }
+  if ((circleX == pos.x) && (circleY == pos.y)) {
+    score+=1;
+    fill(0);
+    highscore = max(score, highscore);
+    text(""+score, 30, 30);
+  }
 }    
 
 //keypressed functions
