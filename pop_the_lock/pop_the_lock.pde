@@ -171,8 +171,8 @@ void draw() {
   if ((sqrt(sq((pos.x - 30 - 15) - circleX) + sq((pos.y - 40 - 15) - circleY))) < 35)
 
   {
-    //stops it from continuing to draw
-    noLoop();
+   //stops it from continuing to draw
+   noLoop();
   }
   if ((circleX == pos.x) && (circleY == pos.y)) {
     score+=1;
