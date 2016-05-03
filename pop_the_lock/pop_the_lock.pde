@@ -5,29 +5,40 @@ import ddf.minim.effects.*;
 import ddf.minim.signals.*;
 import ddf.minim.spi.*;
 import ddf.minim.ugens.*;
+float rx;
+float ry;
+
+boolean right = false;
+boolean left = false;
+boolean isInCircle = false;
 
 PVector randomPoint(float radius, float angle) {
   float x = radius * cos(angle);
   float y = radius * sin(angle);
-
+ //Random x
+ rx = x;
+ //random Y
+ ry = y;
   return new PVector(x, y);
 }
 
 //values that will be used later in the code
+//Disregard int XX and int YY
 float change = 3;
-float angle = 0;
+float angle = 270;
+
 float radius = 63;
 int timeSinceDirectionSwap = 0;
 int lvl;
 float circleX = cos(radians(angle)) * radius;
 float circleY = sin(radians(angle)) * radius;
-int markerX = width; 
-int markerY = height;
 int death = 1;
 int score = 0;
 int highscore;
 
-PVector pos;
+PVector yellowPos;
+PVector pinkPos;
+
 
 //boolean for random points on the circle
 boolean firstNumber = true;
@@ -39,7 +50,10 @@ AudioInput input;
 AudioPlayer song;
 
 void setup() {
-  pos = randomPoint(radius, random(360));
+
+  yellowPos = new PVector(0.0, 0.0);
+  pinkPos = new PVector(0.0, 0.0);
+  yellowPos = randomPoint(radius, random(360));
 
   //
   size(400, 600);
@@ -153,38 +167,64 @@ void draw() {
 
     angle+=change;
     fill(0);
-    float circleX = cos(radians(angle)) * radius;
-    float circleY = sin(radians(angle)) * radius;
+    pinkPos.set(cos(radians(angle)) * radius, sin(radians(angle)) * radius);
+
     fill(#FF6A6A);
-    ellipse(circleX, circleY, 24, 24);
+    ellipse(pinkPos.x, pinkPos.y, 24, 24);
     timeSinceDirectionSwap ++;
   }
 
-  if (firstNumber == false) {
-  }
-
   if ((lvl == 2)&&(firstNumber == true)) {
-
+    // yellow circle
     fill(#E9FF48);
-    ellipse(pos.x, pos.y, 24, 24);
+    ellipse(yellowPos.x, yellowPos.y, 24, 24);
   }
-  if ((sqrt(sq((pos.x - 30 - 15) - circleX) + sq((pos.y - 40 - 15) - circleY))) < 35)
 
+  ////Hit detection
+  //if (( angle >= circleX) && (angle >= circleY) && (lvl == 2)) {
+  //  text("test", 30, 30);
+  //  score+=1;
+  //  fill(0);
+  //  //highscore = max(score, highscore);
+  //  //textSize(45);
+  //  //text(""+score, 0, 10);
+  //  randomPoint(radius, random(360));
+  //} else if (( angle <= circleX) && (angle <= circleY) && (lvl == 2)) {
+  //  textSize(10);
+  //  text("you died", 30, 30);
+  //}
+  
+  if(pinkPos.x > yellowPos.x -24 && pinkPos.x < yellowPos.x + 24 && pinkPos.y > yellowPos.y - 24 && pinkPos.y < yellowPos.y + 24 && !isInCircle)
   {
-   //stops it from continuing to draw
-   noLoop();
+    isInCircle = true;
+    
+    if(change == 3)right = true;
+    if(change == -3)left = true;
+  }else if(isInCircle && !(pinkPos.x > yellowPos.x -24 && pinkPos.x < yellowPos.x + 24 && pinkPos.y > yellowPos.y - 24 && pinkPos.y < yellowPos.y + 24))
+  {
+    println(change);
+    println(left);
+    if((change == 3 && left) || (change == -3 && right))
+    {
+       yellowPos = randomPoint(radius, random(360));
+    }
+    else noLoop();
+    
+    right = false;
+    left = false;
+    
+    isInCircle = false;
+    
   }
-  if ((circleX == pos.x) && (circleY == pos.y)) {
-    score+=1;
-    fill(0);
-    highscore = max(score, highscore);
-    text(""+score, 30, 30);
-  }
-}    
+  
+  
+}
 
 //keypressed functions
 void keyPressed() {
   if (key == 'f' && timeSinceDirectionSwap >= 19) {
+    
+    
     change *= -1;
     timeSinceDirectionSwap = 0;
   } else if (key == 's') {
@@ -192,7 +232,5 @@ void keyPressed() {
   } else if (key == 'S') {
   } else if (key == 'r') {
     lvl = 1;
-  } else if (key == 'R') {
-  } else if (key == 'd') {
   }
 }
