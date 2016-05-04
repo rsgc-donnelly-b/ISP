@@ -15,10 +15,10 @@ boolean isInCircle = false;
 PVector randomPoint(float radius, float angle) {
   float x = radius * cos(angle);
   float y = radius * sin(angle);
- //Random x
- rx = x;
- //random Y
- ry = y;
+  //Random x
+  rx = x;
+  //random Y
+  ry = y;
   return new PVector(x, y);
 }
 
@@ -33,7 +33,7 @@ int lvl;
 float circleX = cos(radians(angle)) * radius;
 float circleY = sin(radians(angle)) * radius;
 int death = 1;
-int score = 0;
+int score = 1;
 int highscore;
 
 PVector yellowPos;
@@ -172,6 +172,11 @@ void draw() {
     fill(#FF6A6A);
     ellipse(pinkPos.x, pinkPos.y, 24, 24);
     timeSinceDirectionSwap ++;
+
+    //Points going up
+    fill(0);
+    textSize(45);
+    text(""+score, 0, 10);
   }
 
   if ((lvl == 2)&&(firstNumber == true)) {
@@ -193,38 +198,41 @@ void draw() {
   //  textSize(10);
   //  text("you died", 30, 30);
   //}
-  
-  if(pinkPos.x > yellowPos.x -24 && pinkPos.x < yellowPos.x + 24 && pinkPos.y > yellowPos.y - 24 && pinkPos.y < yellowPos.y + 24 && !isInCircle)
+
+  if (pinkPos.x > yellowPos.x -24 && pinkPos.x < yellowPos.x + 24 && pinkPos.y > yellowPos.y - 24 && pinkPos.y < yellowPos.y + 24 && !isInCircle)
   {
     isInCircle = true;
-    
-    if(change == 3)right = true;
-    if(change == -3)left = true;
-  }else if(isInCircle && !(pinkPos.x > yellowPos.x -24 && pinkPos.x < yellowPos.x + 24 && pinkPos.y > yellowPos.y - 24 && pinkPos.y < yellowPos.y + 24))
+
+    if (change == 3)right = true;
+    if (change == -3)left = true;
+  } else if (isInCircle && !(pinkPos.x > yellowPos.x -24 && pinkPos.x < yellowPos.x + 24 && pinkPos.y > yellowPos.y - 24 && pinkPos.y < yellowPos.y + 24))
   {
     println(change);
     println(left);
-    if((change == 3 && left) || (change == -3 && right))
+    if ((change == 3 && left) || (change == -3 && right))
     {
-       yellowPos = randomPoint(radius, random(360));
-    }
-    else noLoop();
-    
+      yellowPos = randomPoint(radius, random(360));
+      score+=1;
+    } else noLoop();
+
     right = false;
     left = false;
-    
+
     isInCircle = false;
-    
+    player = minim.loadFile("Game Over.mp3");
+    song.close();
+    player.play();
+    textSize(50);
+    fill(0);
+    text("GAME OVER!", 0, -170);
   }
-  
-  
 }
 
 //keypressed functions
 void keyPressed() {
   if (key == 'f' && timeSinceDirectionSwap >= 19) {
-    
-    
+
+
     change *= -1;
     timeSinceDirectionSwap = 0;
   } else if (key == 's') {
