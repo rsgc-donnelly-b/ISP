@@ -38,7 +38,7 @@ int lvl;
 float circleX = cos(radians(angle)) * radius;
 float circleY = sin(radians(angle)) * radius;
 int death = 1;
-int score = 1;
+int score = 0;
 int highscore;
 
 PVector yellowPos;
@@ -129,6 +129,8 @@ void draw() {
     textSize(20);
     text("Press S to Start!", 200, 80);
     text("Press P for controls and Credits!", 200, 430);
+    textSize(70);
+    text("0", 201, 265);
 
     fill(0);
     textAlign(CENTER);
@@ -227,9 +229,6 @@ void draw() {
     } else noLoop();
     right = false;
     left = false;
-    textSize(50);
-    fill(0);
-
     isInCircle = false;
   }
 }
@@ -246,10 +245,11 @@ void keyPressed() {
   } else if (key == 'r') {
     loop();
     lvl=1;
-    score = 1;
+    score = 0;
     randomPoint(radius, random(360));
     angle = 270;
     change = 3;
+    song.play();
   } //else if (key == 'p') { // pause key
   //  pauseMenu.display();
   //}
