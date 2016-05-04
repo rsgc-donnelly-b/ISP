@@ -110,8 +110,8 @@ void draw() {
     //Title
     fill(0);
     textAlign(CENTER);
-    textSize(50);
-    text("Pop The Lock!", 200, 45);
+    textSize(27);
+    text("POP THE LOCK! HARD MODE!", 200, 45);
 
     //Subtitle
     fill(0);
@@ -175,8 +175,8 @@ void draw() {
 
     //Points going up
     fill(0);
-    textSize(45);
-    text(""+score, 0, 10);
+    textSize(70);
+    text(""+score, 0, 20);
   }
 
   if ((lvl == 2)&&(firstNumber == true)) {
@@ -214,17 +214,13 @@ void draw() {
       yellowPos = randomPoint(radius, random(360));
       score+=1;
     } else noLoop();
-
+    
     right = false;
     left = false;
-
-    isInCircle = false;
-    player = minim.loadFile("Game Over.mp3");
-    song.close();
-    player.play();
     textSize(50);
     fill(0);
-    text("GAME OVER!", 0, -170);
+
+    isInCircle = false;
   }
 }
 
