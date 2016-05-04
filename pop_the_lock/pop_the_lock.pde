@@ -55,6 +55,7 @@ AudioInput input;
 AudioPlayer song;
 
 void setup() {
+  frameRate(60);
 
   yellowPos = new PVector(0.0, 0.0);
   pinkPos = new PVector(0.0, 0.0);
@@ -112,6 +113,10 @@ void draw() {
     fill(#64E5B0);
     ellipse(200, 245, 100, 100);
 
+    //Ellipse at the starting point
+    fill(#FF6A6A);
+    ellipse(200, 182, 24, 24);
+
     //Title
     fill(0);
     textAlign(CENTER);
@@ -123,7 +128,7 @@ void draw() {
     textAlign(CENTER);
     textSize(20);
     text("Press S to Start!", 200, 80);
-    text("Press P for controls and Credits!", 200, 100);
+    text("Press P for controls and Credits!", 200, 430);
 
     fill(0);
     textAlign(CENTER);
@@ -185,69 +190,74 @@ void draw() {
     text(""+score, 0, 20);
   }
   if ((pauseBoolean == true) && (lvl == 1)) {
-    fill(#6ADBAB);
-    rect(50, 100, 300, 410);
+    fill(#54B28A, 100);
+    rect(45, 100, 320, 410);
     fill(0);
     textSize(20);
     text("Controls", 200, 130);
     textSize(12);
-    text("Space moves the yellow circle back and forth", 200, 150);
+    text("Space moves the pink circle back and forth", 200, 150);
     textSize(20);
     text("Credits", 200, 190);
     text("reddit.com/u/nicowesse", 200, 210);
     text(" Mr. Gordon", 200, 230);
+    text("Logush", 200, 250);
   }
 
-    if ((lvl == 2)&&(firstNumber == true)) {
-      // yellow circle
-      fill(#E9FF48);
-      ellipse(yellowPos.x, yellowPos.y, 24, 24);
-    }
+  if ((lvl == 2)&&(firstNumber == true)) {
+    // yellow circle
+    fill(#E9FF48);
+    ellipse(yellowPos.x, yellowPos.y, 24, 24);
+  }
 
-    if (pinkPos.x > yellowPos.x -24 && pinkPos.x < yellowPos.x + 24 && pinkPos.y > yellowPos.y - 24 && pinkPos.y < yellowPos.y + 24 && !isInCircle)
+  if (pinkPos.x > yellowPos.x -24 && pinkPos.x < yellowPos.x + 24 && pinkPos.y > yellowPos.y - 24 && pinkPos.y < yellowPos.y + 24 && !isInCircle)
+  {
+    isInCircle = true;
+
+    if (change == 3)right = true;
+    if (change == -3)left = true;
+  } else if (isInCircle && !(pinkPos.x > yellowPos.x -24 && pinkPos.x < yellowPos.x + 24 && pinkPos.y > yellowPos.y - 24 && pinkPos.y < yellowPos.y + 24))
+  {
+    println(change);
+    println(left);
+    if ((change == 3 && left) || (change == -3 && right))
     {
-      isInCircle = true;
+      yellowPos = randomPoint(radius, random(360));
+      score+=1;
+    } else noLoop();
+    right = false;
+    left = false;
+    textSize(50);
+    fill(0);
 
-      if (change == 3)right = true;
-      if (change == -3)left = true;
-    } else if (isInCircle && !(pinkPos.x > yellowPos.x -24 && pinkPos.x < yellowPos.x + 24 && pinkPos.y > yellowPos.y - 24 && pinkPos.y < yellowPos.y + 24))
-    {
-      println(change);
-      println(left);
-      if ((change == 3 && left) || (change == -3 && right))
-      {
-        yellowPos = randomPoint(radius, random(360));
-        score+=1;
-      } else noLoop();
+    isInCircle = false;
+  }
+}
 
-      right = false;
-      left = false;
-      textSize(50);
-      fill(0);
+//keypressed functions
+void keyPressed() {
+  if (key == ' ' && timeSinceDirectionSwap >= 19) {
 
-      isInCircle = false;
+
+    change *= -1;
+    timeSinceDirectionSwap = 0;
+  } else if (key == 's') {
+    lvl = 2;
+  } else if (key == 'r') {
+    loop();
+    lvl=1;
+    score = 1;
+    randomPoint(radius, random(360));
+    angle = 270;
+    change = 3;
+  } //else if (key == 'p') { // pause key
+  //  pauseMenu.display();
+  //}
+  if (key == 'p') {
+    if (pauseBoolean == false) {
+      pauseBoolean = true;
+    } else {
+      pauseBoolean = false;
     }
   }
-
-  //keypressed functions
-  void keyPressed() {
-    if (key == ' ' && timeSinceDirectionSwap >= 19) {
-
-
-      change *= -1;
-      timeSinceDirectionSwap = 0;
-    } else if (key == 's') {
-      lvl = 2;
-    } else if (key == 'r') {
-      lvl = 1;
-    } //else if (key == 'p') { // pause key
-    //  pauseMenu.display();
-    //}
-    if (key == 'p') {
-      if (pauseBoolean == false) {
-        pauseBoolean = true;
-      } else {
-        pauseBoolean = false;
-      }
-    }
-  }
+}
